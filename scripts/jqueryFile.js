@@ -1,3 +1,3 @@
 define(["jquery"], function ($) {
-  $("body").html("hello from jquery");
+  $("title").html("CleverTap Integration SDK");
 });

@@ -5,12 +5,81 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CTRequire JS Wrapper Test</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- require.js wrapper -->
     <script data-main="config/config" src="./scripts/require.js"></script>
     <script>
       require(["config"], function () {
         require(["jqueryFile", "clevertapFile"]);
       });
     </script>
+
+    <!-- CleverTap SDK -->
+    <script type="text/javascript">
+      var clevertap = {
+        event: [],
+        profile: [],
+        account: [],
+        onUserLogin: [],
+        notifications: [],
+        privacy: [],
+      };
+      // replace with the CLEVERTAP_ACCOUNT_ID with the actual ACCOUNT ID value from your Dashboard -> Settings page
+      clevertap.account.push({ id: "account_id" });
+      clevertap.privacy.push({ optOut: false }); //set the flag to true, if the user of the device opts out of sharing their data
+      clevertap.privacy.push({ useIP: false }); //set the flag to true, if the user agrees to share their IP data
+      (function () {
+        var wzrk = document.createElement("script");
+        wzrk.type = "text/javascript";
+        wzrk.async = true;
+        wzrk.src =
+          ("https:" == document.location.protocol
+            ? "https://d2r1yp2w7bby2u.cloudfront.net"
+            : "http://static.clevertap.com") + "/js/clevertap.min.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(wzrk, s);
+      })();
+    </script>
   </head>
-  <body></body>
+  <body>
+    <h1>Web SDK Integration Test!</h1>
+
+    <!-- onUserLogin -->
+    <script src="scripts.js"></script>
+
+    <input id="name" type="text" name="username" placeholder="Name" />
+    <br /><br />
+    <input id="emailid" type="text" name="username" placeholder="Email ID" />
+    <br /><br />
+    <input id="identity" type="text" name="username" placeholder="Identity" />
+    <br /><br />
+    <input id="mobno" type="text" name="username" placeholder="Mobile Number" />
+    <br /><br />
+    <div class="snackbar" id="sb6">Logged In!</div>
+    <button id="login" onclick="loginUser()">Login</button>
+    <br /><br />
+
+    <!-- event -->
+    <input
+      id="eventName"
+      type="text"
+      name="username"
+      placeholder="Event Name"
+    />
+    <br /><br />
+    <button id="event" onclick="pushEvent()">Push Event</button>
+    <div class="snackbar" id="sb1">Push Event Clicked!</div>
+    <script>
+      let pushEvent = () => {
+        clevertap.event.push(document.getElementById("eventName").value);
+        //snackbar
+        var x = document.getElementById("sb1");
+        x.classList.add("show");
+        setTimeout(function () {
+          x.className = x.className.replace("show", "");
+        }, 3000);
+      };
+    </script>
+  </body>
 </html>
